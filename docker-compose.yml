@@ -35,9 +35,11 @@ services:
       context: ./micro-naturales
       dockerfile: Dockerfile
     ports:
-      - "8082:5000"
+      - "8086:5000"
     networks:
       - micros-net
+  redis:
+        image: "redis:alpine"
 
   micro-notificaciones:
     build:

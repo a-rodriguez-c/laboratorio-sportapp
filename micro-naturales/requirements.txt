@@ -1,4 +1,4 @@
 Flask==2.0.2
 Werkzeug==2.0.2
-sqlalchemy
-gunicorn
+redis==3.5.3
+
