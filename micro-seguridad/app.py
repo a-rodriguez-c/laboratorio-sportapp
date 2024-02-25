@@ -35,8 +35,6 @@ def eventos_seguridad():
 
 
     cache.rpush('eventos_seguridad', json.dumps(event_data))
-
-
     channel.basic_publish(exchange='events', routing_key='seguridad', body=json.dumps(event_data))
 
     return jsonify({'message': 'Evento publicado'}), 200
