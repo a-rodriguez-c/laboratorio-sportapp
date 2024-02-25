@@ -2,15 +2,25 @@ import redis
 from flask import Flask, request, jsonify
 import json
 import pika
+import time
 
 app = Flask(__name__)
 
 # Conexión a Redis
 cache = redis.Redis(host='redis', port=6379)
 
+# Función para establecer conexión con RabbitMQ
+def conectar_rabbitmq():
+    while True:
+        try:
+            connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+            return connection
+        except pika.exceptions.AMQPConnectionError:
+            print("Error de conexión con RabbitMQ. Reintentando en 5 segundos...")
+            time.sleep(5)
+
 # Conexión a RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
-# connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = conectar_rabbitmq()
 channel = connection.channel()
 channel.exchange_declare(exchange='events', exchange_type='topic')
 
