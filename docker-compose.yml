@@ -69,6 +69,18 @@ services:
     networks:
       - micros-net
 
+  loadgenerator:
+    build:
+      context: ./loadgenerator
+      dockerfile: Dockerfile
+    ports:
+      - "8089:8089"
+    environment:
+      - LOCUST_FILE=/mnt/locust/app.py
+      - TARGET_HOST=http://micro-seguridad:5000
+    networks:
+      - micros-net
+
 networks:
   micros-net:
     driver: bridge
