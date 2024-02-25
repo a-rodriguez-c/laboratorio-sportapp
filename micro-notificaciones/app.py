@@ -1,10 +1,23 @@
-from flask import Flask
+from flask_socketio import socketio, emit
+import redis
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hola micro notificaciones!'
+cache = redis.Redis(host='redis', port=6379)
+
+#Pagina inicial
+@app.route('/notificaciones', methods=['POST'])
+def notificaciones():
+    return render_template('notificaciones.html')
+
+#Manejador de evento para enviar notificaciones
+@socketio.on ('send_notofication')
+def handle_notification(notification):
+    emit('receive_notification', notification, broadcast=True)
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    socketio.run(app, debug=True)
+    
