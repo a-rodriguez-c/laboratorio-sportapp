@@ -5,7 +5,7 @@ import json
 app = Flask(__name__)
 
 # Conexión a Redis: Se establece una conexión con el servidor Redis. En este caso, se asume que Redis está ejecutándose en el mismo contenedor con el nombre de host redis en el puerto predeterminado 6379.
-cache = redis.Redis(host='redis', port=6379)
+cache = redis.Redis(host='redis', port='redis://localhost:6379/0')
 
 @app.route('/eventos-naturales', methods=['POST'])
 def eventos_naturales():
