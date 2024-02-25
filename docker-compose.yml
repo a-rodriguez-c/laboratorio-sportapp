@@ -8,6 +8,15 @@ services:
       - "8080:5000"
     networks:
       - micros-net
+ 
+  redis:
+    image: "redis:alpine"
+    container_name: 'redis'
+    ports:
+      - "6379:6379"
+    networks:
+      - micros-net
+
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -20,7 +29,8 @@ services:
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
       - micros-net
-
+  
+    
   micro-seguridad:
     build:
       context: ./micro-seguridad
@@ -38,6 +48,8 @@ services:
       - "8082:5000"
     networks:
       - micros-net
+
+
 
   micro-notificaciones:
     build:
@@ -57,6 +69,19 @@ services:
     networks:
       - micros-net
 
+  loadgenerator:
+    build:
+      context: ./loadgenerator
+      dockerfile: Dockerfile
+    ports:
+      - "8089:8089"
+    environment:
+      - LOCUST_FILE=/mnt/locust/app.py
+      - TARGET_HOST=http://micro-seguridad:5000
+    networks:
+      - micros-net
+
 networks:
   micros-net:
     driver: bridge
+
