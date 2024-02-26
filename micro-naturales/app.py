@@ -62,9 +62,16 @@ channel.queue_declare(queue='eventos_naturales_queue')
 channel.queue_bind(exchange='events', queue='eventos_naturales_queue', routing_key='naturales')
 channel.basic_consume(queue='eventos_naturales_queue', on_message_callback=callback, auto_ack=True)
 
+# Iniciar el consumo de eventos
+channel.start_consuming()
+
 @app.route('/', methods=['GET'])
 def index():
     return 'Servicio de eventos naturales'
+
+@app.route('/ping', methods=['GET'])
+def monitor_ping():
+    return 'Ok'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
