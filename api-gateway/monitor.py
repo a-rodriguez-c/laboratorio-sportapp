@@ -6,11 +6,11 @@ import time
 def monitor(micro):
     while True:
         try:
-            url_micro_seguridad = f'http://{micro}/'
+            url_micro_seguridad = f'http://{micro}/ping'
             response = requests.get(url_micro_seguridad)
-            print(response.text)
+            print(f'{micro} {response.text}')
         except requests.exceptions.RequestException as e:
-            print(f'Micro servicio {micro} no disponible')
+            print(f'{micro} no disponible')
         time.sleep(5)
 
 

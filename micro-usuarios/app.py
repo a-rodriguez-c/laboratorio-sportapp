@@ -49,5 +49,9 @@ def delete_user(user_id):
     users = [user for user in users if user["id"] != user_id]
     return jsonify({"message": "User deleted"})
 
+@app.route('/ping', methods=['GET'])
+def index():
+    return jsonify("ok")
+
 if __name__ == '__main__':
     app.run(debug=True)

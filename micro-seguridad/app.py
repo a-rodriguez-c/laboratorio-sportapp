@@ -19,9 +19,6 @@ def con_rabbitmq():
             print("Error de conexión con RabbitMQ. Reintentando en 5 segundos...")
             time.sleep(5)
 
-connection = con_rabbitmq()
-channel = connection.channel()
-channel.exchange_declare(exchange='events', exchange_type='topic')
 
 
 @app.route('/eventos-seguridad', methods=['POST'])
@@ -35,7 +32,18 @@ def eventos_seguridad():
     }
 
     cache.rpush('eventos_seguridad', json.dumps(event_data))
-    channel.basic_publish(exchange='events', routing_key='seguridad', body=json.dumps(event_data))
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+    connection.channel().queue_declare(queue='eventos_seguridad', durable=True)
+    connection.channel().basic_publish(
+        exchange='',
+        routing_key='eventos_seguridad',
+        body=json.dumps(event_data),
+        properties=pika.BasicProperties(
+            delivery_mode=2,  # make message persistent
+
+        ))
+    connection.close()
 
     return jsonify({'message': 'Evento publicado'}), 200
 
@@ -53,9 +61,6 @@ def callback(ch, method, properties, body):
 
     print("Evento recibido:", event_data)
 
-channel.queue_declare(queue='eventos_seguridad_queue')
-channel.queue_bind(exchange='events', queue='eventos_seguridad_queue', routing_key='seguridad')
-channel.basic_consume(queue='eventos_seguridad_queue', on_message_callback=callback, auto_ack=True)
 
 @app.route('/', methods=['GET'])
 def index():

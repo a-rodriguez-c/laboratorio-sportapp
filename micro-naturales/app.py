@@ -66,5 +66,10 @@ channel.basic_consume(queue='eventos_naturales_queue', on_message_callback=callb
 def index():
     return 'Servicio de eventos naturales'
 
+
+@app.route('/ping', methods=['GET'])
+def ping():
+    return 'ok'
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

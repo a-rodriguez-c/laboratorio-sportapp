@@ -1,8 +1,8 @@
 FROM locustio/locust:1.5.3
 
-COPY requirements.txt /mnt/locust/
-RUN pip install --no-cache-dir -r /mnt/locust/requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py /mnt/locust/
+COPY locustfile.py .
 
-CMD ["locust", "-f", "/mnt/locust/app.py"]
+CMD ["locust", "-f", "locustfile.py"]

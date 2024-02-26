@@ -17,7 +17,6 @@ services:
     networks:
       - micros-net
 
-
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
@@ -49,8 +48,6 @@ services:
     networks:
       - micros-net
 
-
-
   micro-notificaciones:
     build:
       context: ./micro-notificaciones
@@ -76,8 +73,8 @@ services:
     ports:
       - "8089:8089"
     environment:
-      - LOCUST_FILE=/mnt/locust/app.py
-      - TARGET_HOST=http://micro-seguridad:5000
+      - LOCUST_FILE=/locustfile.py
+      - TARGET_HOST=http://localhost:5000
     networks:
       - micros-net
 

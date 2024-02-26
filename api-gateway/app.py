@@ -5,8 +5,8 @@ from monitor import health_check
 app = Flask(__name__)
 
 # MONITOREO DE MICRO-SERVICIOS
-# micros = ['localhost:8081', 'localhost:8082', 'localhost:8083', 'localhost:8084'] // local test
-micros = ['micro-seguridad:5000', 'micro-naturales:5000', 'micro-notificaciones:5000', 'micro-usuarios:5000']
+micros = ['localhost:8081', 'localhost:8082', 'localhost:8083', 'localhost:8084']
+# micros = ['micro-seguridad:5000', 'micro-naturales:5000', 'micro-notificaciones:5000', 'micro-usuarios:5000']
 health_check(micros)
 
 
@@ -48,4 +48,4 @@ def micro_usuarios():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5004)
