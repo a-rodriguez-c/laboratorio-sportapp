@@ -23,6 +23,7 @@ connection = con_rabbitmq()
 channel = connection.channel()
 channel.exchange_declare(exchange='events', exchange_type='topic')
 
+
 @app.route('/eventos-seguridad', methods=['POST'])
 def eventos_seguridad():
     data = request.get_json()
@@ -32,7 +33,6 @@ def eventos_seguridad():
         'location': data['location'],
         'severity': data['severity'],
     }
-
 
     cache.rpush('eventos_seguridad', json.dumps(event_data))
     channel.basic_publish(exchange='events', routing_key='seguridad', body=json.dumps(event_data))
